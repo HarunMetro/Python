@@ -8,4 +8,3 @@ Tein tehtävät 1 ja 2
 
 ## Moduuli 2
 
-tehtävä 1 tehty
