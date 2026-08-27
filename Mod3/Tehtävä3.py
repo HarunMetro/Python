@@ -6,4 +6,4 @@ suorakulmion_leveys = float(input("Kerro suorakulmion leveys: "))
 Pinta_ala = suorakulmion_korkeus * suorakulmion_leveys
 Piiri = 2 * (suorakulmion_korkeus + suorakulmion_leveys)
 
-print(f"suorakulmion pinta-ala on {Pinta_ala:.2f} ja piiri on {Piiri:.2f}")
+print(f"Suorakulmion pinta-ala on {Pinta_ala:.2f} ja piiri on {Piiri:.2f}")

@@ -1,39 +1,28 @@
 # # #Muuttujat ja vuorovaikutteiset ohjelmat
 
-# # print('Huommenta, kaikille!\nOlen Harun')
+print('Huommenta, kaikille!\nOlen Harun')
 
-# # user = input("Syötä käyttäjätunnuksesi: ")
-# # print("Huomenta", user +"!")
+user = input("Syötä käyttäjätunnuksesi: ")
+print("Huomenta", user +"!")
 
-# # Väri = "Punainen"
-# # print("Minun suosikki väri on", Väri + ".")
+Väri = "Punainen"
+print("Minun suosikki väri on", Väri + ".")
 
-# # eka = -9
-# # toka = 12_456_123_180
-# # kolmas = 4.973
-# # neljäs = -4 + 2j
 
-# # print(eka)
-# # print(toka)
-# # print(kolmas)
-# # print(neljäs)
-# # print(neljäs.real)
-# # print(neljäs.imag)
+lämpötila = input("Kerro lämpötila fahrenheit yksikössä:")
 
-# # lämpötila = input("Kerro lämpötila fahrenheit yksikössä:")
+int_lämpötila = int(lämpötila)
+celsius = (int(lämpötila) - 32) * 5 / 9
 
-# # int_lämpötila = int(lämpötila)
-# # celsius = (int(lämpötila) - 32) * 5 / 9
+print("Lämpötila celsius yksikössä on", (str(celsius))) 
+#voi myös laittaa vain , celcius se myös toimii, mutta silloin celsius on float eikä string
 
-# # print("Lämpötila celsius yksikössä on", (str(celsius))) 
-# # #voi myös laittaa vain , celcius se myös toimii, mutta silloin celsius on float eikä string
+print(f"Lämpötila {int(lämpötila):.3f} Fahrenheit-asteina: {celsius:6.2f}")
 
-# # print(f"Lämpötila {int(lämpötila):.3f} Fahrenheit-asteina: {celsius:6.2f}")
+import math
 
-# # import math
-
-# # print(f"{'Pii':12s}:{math.pi:10.5f}")
-# # print(f"{'Neperin luku':12s}:{math.e:10.5f}")
+print(f"{'Pii':12s}:{math.pi:10.5f}")
+print(f"{'Neperin luku':12s}:{math.e:10.5f}")
 
 
 #example 1 
@@ -58,14 +47,14 @@ banaani = float(input("Kerro banaanin paino kiloina: "))
 omena = float(input("Kerro omenan paino kiloina: "))
 appelsiini = float(input("Kerro appelsiinin paino kiloina: "))
 
-Banaanin_hinta = banaani*2.85
-Omenan_hinta = omena*3.15
-Appelsiinin_hinta = appelsiini*4.05
-Yhteishinta = Banaanin_hinta + Omenan_hinta + Appelsiinin_hinta
+banaanin_hinta = banaani*2.85
+omenan_hinta = omena*3.15
+appelsiinin_hinta = appelsiini*4.05
+Yhteishinta = banaanin_hinta + omenan_hinta + appelsiinin_hinta
 
-print(f"Banaanin hinta on {Banaanin_hinta:.2f}€, ")
-print(f"Omenan hinta on {Omenan_hinta:.2f}€ ")
-print(f"Appelsiinin hinta on {Appelsiinin_hinta:.2f}€")
+print(f"Banaanin hinta on {banaanin_hinta:.2f}€, ")
+print(f"Omenan hinta on {omenan_hinta:.2f}€ ")
+print(f"Appelsiinin hinta on {appelsiinin_hinta:.2f}€")
 print(f"Yhteensä: {Yhteishinta:.2f}€")
 
 #example 3
