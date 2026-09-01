@@ -12,10 +12,10 @@ Tein tehtävät 1 ja 2
 
  tehtävä 6 grammoina antaminen epäonnistui en keksinyt siihe mitään joten käytin AI ja nettiä siihen muuten kaikki muu selvisi. 
 
- ## Moduuli 4
+## Moduuli 4
 
  Tein tehtävät 1-4
 
- ## Moduuli 5
+## Moduuli 5
 
- 
+Tein tehtävät 1-5 ja 6 tehtävän en osaa yhtään 
