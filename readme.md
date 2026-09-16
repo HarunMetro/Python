@@ -4,7 +4,7 @@
 
 ## Moduuli 1 + 2
 
-Tein tehtävät 1 ja 2
+ Tein tehtävät 1 ja 2
 
 ## Moduuli 3 
 
@@ -17,9 +17,13 @@ Tein tehtävät 1 ja 2
  Tein tehtävät 1-4
 
 ## Moduuli 5
-
-Tein tehtävät 1-5 ja 6 tehtävän en osaa yhtään 
+ 
+ Tein tehtävät 1-5 ja 6 tehtävän en osaa yhtään 
 
 ## Moduuli 6
 
-Sain tehtyä tehtävät 1-4 ja tehtävä 3 jäi vähän epäselväksi vaikka sain tehtyä sen
+ Sain tehtyä tehtävät 1-4 
+
+## Moduuli 7
+
+ Sain tehtyä 
