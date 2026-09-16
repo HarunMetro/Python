@@ -26,4 +26,4 @@
 
 ## Moduuli 7
 
- Sain tehtyä 
+ Sain tehtyä tehtävät 1-6
