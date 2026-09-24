@@ -1,60 +1,60 @@
-from funktiot import *
+from Class import *
+from Function import *
 
-käyttäjätunnus = input("Enter your username: ")
-käyttäjä_ikä = int(input("Enter your age: "))
-
-if käyttäjä_ikä < 12:
-    print("You are too young to play this game, thank you and bye bye.")
-    exit()
-elif käyttäjä_ikä > 102:
-    print("Your too old to play this game, thank you and bye bye.")
-    exit()  # peli sammuu
-
-print(f"\nWelcome {käyttäjätunnus}! Let's start the game!")
-
-# valikko on lista for-silmukka tulostaa sen yhdellä kertaa ei tarvitse toistaa print-rivejä
-pää_valikko = ["walking", "bicycle", "bus", "car", "backpack", "location", "quit"]
-pieni_valikko = ["backpack", "location", "continue", "quit"]
-
-# sijainti kertoo missä pelaaja on tällä hetkellä
-sijainti = "at home on the couch chilling"
-
-# reppu on lista siihen voi lisätä ja siitä voi lukea tavarat for-silmukalla
-reppu = ["phone", "headphones", "bus card", "3 books", "lunch", "keys"]
-
-tulosta_valikko(pää_valikko, "How do you travel to school today?")
-komento = input("Enter command: ").lower()
-
-matka_alkanut = False  
+pelaaja = luo_pelaaja()
+komento = aloita_peli(pelaaja)
 
 while komento != "quit":
-    if not matka_alkanut and komento == "walking":
-        reitti_kävely1(käyttäjätunnus,)
-        tapahtuma_kävely_roska(käyttäjätunnus, reppu, pieni_valikko)
-        tapahtuma_kävely_kyssäri(käyttäjätunnus, reppu, pieni_valikko)
-        sijainti = tapahtuma_kävely_ystävä(käyttäjätunnus, reppu, pieni_valikko)
-        matka_alkanut = True
-    elif not matka_alkanut and komento == "bicycle":
-        sijainti = reitti_pyörä1(käyttäjätunnus)
-        matka_alkanut = True
-    elif not matka_alkanut and komento == "bus":
-        sijainti = reitti_bussi1(käyttäjätunnus)
-        matka_alkanut = True
-    elif not matka_alkanut and komento == "car":
-        sijainti = reitti_auto1(käyttäjätunnus)
-        matka_alkanut = True
+    if not pelaaja.matka_alkanut and komento == "walking":
+        reitti_kävely1(pelaaja)
+        tapahtuma_kävely_roska(pelaaja, pieni_valikko)
+        tapahtuma_kävely_kyssäri(pelaaja, pieni_valikko)
+        tapahtuma_kävely_ystävä(pelaaja, pieni_valikko)
+        tapahtuma_kävely_reitti_koulu(pelaaja)
+        pelaaja.matka_alkanut = True
+
+
+    elif not pelaaja.matka_alkanut and komento == "bicycle":
+        reitti_pyörä1(pelaaja)
+        tapahtuma_pyörä_mäki(pelaaja, pieni_valikko)
+        tapahtuma_pyörä_koira(pelaaja, pieni_valikko)
+        tapahtuma_pyörä_kivi(pelaaja, pieni_valikko)
+        tapahtuma_pyörä_reitti_koulu(pelaaja)
+        pelaaja.matka_alkanut = True
+
+
+    elif not pelaaja.matka_alkanut and komento == "bus":
+        reitti_bussi1(pelaaja)
+        tapahtuma_bussi_myöhässä(pelaaja, pieni_valikko)
+        tapahtuma_bussi_lippu(pelaaja, pieni_valikko)
+        tapahtuma_bussi_penkki(pelaaja, pieni_valikko)
+        tapahtuma_bussi_pysäkki_ohi(pelaaja, pieni_valikko)
+        tapahtuma_bussi_reitti_koulu(pelaaja)
+        pelaaja.matka_alkanut = True
+    
+    
+    elif not pelaaja.matka_alkanut and komento == "car":
+        reitti_auto1(pelaaja)
+        tapahtuma_auto_unohdettu(pelaaja, pieni_valikko)
+        tapahtuma_auto_liikenne(pelaaja, pieni_valikko)
+        tapahtuma_auto_pysäköinti(pelaaja, pieni_valikko)
+        tapahtuma_auto_reitti_koulu(pelaaja)
+        pelaaja.matka_alkanut = True
+
     elif komento == "backpack":
-        reppu_tavarat(reppu)
+        pelaaja.näytä_reppu()
+
     elif komento == "location":
-        print(f"\nYou are currently: {sijainti}")
+        pelaaja.näytä_sijainti()
+
     else:
         print("\nUnknown command. Please try again.")
 
-    if matka_alkanut:
-        tulosta_valikko(pieni_valikko,"Small Menu")
+    if pelaaja.matka_alkanut:
+        tulosta_valikko(pieni_valikko, "Small Menu")
     else:
-        tulosta_valikko(pää_valikko, "How do you travel to school today?")
-    
+        tulosta_valikko(pää_valikko, "How would you like to travel to school today?")
+
     komento = input("Enter command: ").lower()
 
-print(f"\nThank you for playing, {käyttäjätunnus}! See you next time.")
+print(f"\nThank you for playing, {pelaaja.käyttäjätunnus}! See you never.")
