@@ -88,6 +88,11 @@ class Mage(Adventurer):
     def __init__(self, adventurer_name):
         super().__init__(adventurer_name, hp_point=50, atk_dmg=20)
 
+    def party_heal(self, party):
+        print(f"{self.adventurer_name} casts a healing spell on the party!")
+        for member in party.members:
+            member.gain_life(50)
+
 
 class Paladin(Adventurer):
     def __init__(self, adventurer_name):
@@ -125,25 +130,40 @@ class Party:
             print(f"{member.adventurer_name}: {member.hp_point} HP")
 
 
-playerlist = [
-    Mage(input("Mage name: ")),
-    Paladin(input("Paladin name: ")),
-    Rogue(input("Rogue name: ")),
-]
+# Main program 
 
-for player in playerlist:
-    print(player.adventurer_name)
+mage = Mage(input("Mage name: "))
+paladin = Paladin(input("Paladin name: "))
+rogue = Rogue(input("Rogue name: "))
 
+adventurers = [paladin, mage, rogue]
+
+print("\nThe adventurers:")
+for adventurer in adventurers:
+    print(f"{adventurer.adventurer_name}: {adventurer.hp_point} HP")
+
+# they form a party
 party = Party()
+for adventurer in adventurers:
+    party.add_member(adventurer)
 
-for player in playerlist:
-    party.add_member(player)
+# a rough day of adventuring
+print("\nA rough day of adventuring...")
+paladin.lose_life(100)   # hit on the head by a goblin
+mage.lose_life(20)       # ate a poison mushroom
+rogue.lose_life(50)      # fell down a tree
 
-party.show_members()
-print("\n")
-
+print()
 party.show_health()
-print("\n")
 
-party.retire_member(playerlist[2])
+# the Mage heals the party once
+print()
+mage.party_heal(party)
+
+# the Mage retires for the day
+print()
+party.retire_member(mage)
+
+print()
 party.show_members()
+party.show_health()

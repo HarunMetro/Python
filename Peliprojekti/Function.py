@@ -1,27 +1,97 @@
+import os
 from Class import *
 import threading
 
+## cls
+
+def tyhjennä_ruutu():
+    os.system("cls" if os.name == "nt" else "clear")
+ 
+def odota_enter():
+    input("\n[Press Enter to continue]")
+
 ## ajastettu kysymys
 
-def ajastettu_input(kehote, aikaraja=7):
-    tulos = [None]
+def ajastettu_input(promt, aikaraja):
+    tulos = [None]  # vastaukselle lista
 
-    def kysy():
-        tulos[0] = input(kehote)
+    def kysy():     
+        tulos[0] = input(promt)  # kysytään käyttäjältä ja lisää sen listaan
 
-    threads = threading.Thread(target=kysy)
-    threads.daemon = True
-    threads.start()
-    threads.join(timeout=aikaraja)
+    threads = threading.Thread(target=kysy) # Säie kysymysfunktiolle
+    threads.daemon = True # daemon-säie, jotta se ei estä ohjelman sulkeutumista
+    threads.start() # käynnistetään säie
+    threads.join(timeout=aikaraja) # odotetaan aikarajan verran
 
-    if threads.is_alive():
-        return None
-    return tulos[0]
+    if threads.is_alive(): 
+        return None 
+    return tulos[0] # palautetaan käyttäjän vastaus jos se saatiin ajoissa muuten None
 
 ## valikko
 
-pää_valikko = "walking", "bicycle", "bus", "car", "backpack", "location", "quit"
-pieni_valikko = "backpack", "location", "continue/enter", "quit"
+alku_valikko = (
+    "1- instructions", 
+    "2- status", 
+    "3- start game", 
+    "quit"
+)
+
+ALKU_VALIKKO = """
+╔══════════════════════════════════╗
+║       [   START MENU   ]         ║
+╠══════════════════════════════════╣
+║                                  ║
+║   1- Instructions                ║
+║   2- Status                      ║
+║   3- Start Game                  ║
+║   Quit                           ║
+║                                  ║
+╚══════════════════════════════════╝
+"""
+
+pää_valikko = (
+    "1- walking", 
+    "2- bicycle", 
+    "3- bus", 
+    "4- car",
+    "5- backpack", 
+    "6- location", 
+    "quit"
+)
+
+PÄÄ_VALIKKO = """
+╔════════════════════════════════════════╗
+║  [   HOW DO YOU TRAVEL TO SCHOOL?   ]  ║
+╠════════════════════════════════════════╣
+║                                        ║
+║   1- Walking                           ║
+║   2- Bicycle                           ║
+║   3- Bus                               ║
+║   4- Car                               ║
+║   5- Backpack                          ║
+║   6- Location                          ║
+║   Quit                                 ║
+║                                        ║
+╚════════════════════════════════════════╝
+"""
+
+pieni_valikko = (
+    "1- backpack", 
+    "2- location", 
+    "3- continue/Enter", 
+    "quit"
+)
+
+PIENI_VALIKKO = """
+╔════════════════════════════╗
+║    [   SMALL MENU   ]      ║
+╠════════════════════════════╣                 
+║   1- Backpack              ║
+║   2- Location              ║
+║   3- Continue/Enter        ║
+║   Quit                     ║
+╚════════════════════════════╝
+"""
 
 def tulosta_valikko(valikko, otsikko):
     print(f"\n{otsikko}")
@@ -29,25 +99,36 @@ def tulosta_valikko(valikko, otsikko):
         print("- " + vaihtoehto)
 
 def pieni_valikko_lisäys(pelaaja: Pelaaja, pieni_valikko):
-    tulosta_valikko(pieni_valikko, "Small menu")
+    print(PIENI_VALIKKO)
     komento = input("Enter command: ").lower()
 
-    while komento != "continue" and komento != "":
-        if komento == "backpack":
+    while komento != "3" and komento != "": # 3 - continue 
+        if komento == "1": # 1 - backpack
             pelaaja.näytä_reppu()
-        elif komento == "location":
-            pelaaja.näytä_sijainti()
+        elif komento == "2": # 2 - location
+            pelaaja.näytä_sijainti() 
         elif komento == "quit":
-            print(f"\nThank you for playing, {pelaaja.käyttäjätunnus}! See you never.")
-            exit()
+            vahvistus1 = input("\nAre you sure you want to quit? (yes/no): ").lower()
+
+            if vahvistus1 == "yes":
+                vahvistus2 = input("Are you REALLY sure? Like, 100% sure? (yes/no): ").lower()
+
+                if vahvistus2 == "yes":
+                    print(f"\nThank you for playing, {pelaaja.käyttäjätunnus}! See you never.")
+                    exit()
+                else:
+                    print("\nHah, knew it. Back to the game.")
+            else:
+                print("\nFalse alarm. Back to the game.")
         else:
             print("\n Unknown command. Pleasy try again")
-        tulosta_valikko(pieni_valikko, "Small Menu")
+
+        print(PIENI_VALIKKO)
         komento = input("Enter command: ").lower()
 
 def aloita_peli(pelaaja: Pelaaja):
     print(f"\nWelcome {pelaaja.käyttäjätunnus}! Let's start the game!")
-    tulosta_valikko(pää_valikko, "How would you like to travel to school today?")
+    print(PÄÄ_VALIKKO)
     return input("Enter command: ").lower()
 
 ## kävely
@@ -65,10 +146,14 @@ def tapahtuma_kävely_roska(pelaaja: Pelaaja, pieni_valikko):
         if valinta_roska == "yes":
             pelaaja.lisää_reppuun("trash")
             print(f"\n{pelaaja.käyttäjätunnus} picks up the trash. Good deed for the day!")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         elif valinta_roska == "no":
             print(f"\n{pelaaja.käyttäjätunnus} leaves the trash and continues walking.")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         else:
@@ -84,11 +169,15 @@ def tapahtuma_kävely_kyssäri(pelaaja: Pelaaja, pieni_valikko):
         if valinta_kyssäri == "yes":
             print(f"\n{pelaaja.käyttäjätunnus} starts walking towards the bus stop")
             pelaaja.sijainti = Paikka("Bus stop")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         elif valinta_kyssäri == "no":
             print(f"\n{pelaaja.käyttäjätunnus} continues walking")
             pelaaja.sijainti = Paikka("Walking path")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         else:
@@ -105,10 +194,14 @@ def tapahtuma_kävely_ystävä(pelaaja: Pelaaja, pieni_valikko):
         if ystävä_kyssäri == "yes":
             print(f"\n{pelaaja.käyttäjätunnus} starts talking to their friends for 20 minutes")
             tapahtuma_jalkapallo_kutsu(pelaaja, pieni_valikko)
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         elif ystävä_kyssäri == "no":
             print(f"\n{pelaaja.käyttäjätunnus} waves at their friends and continues walking to school")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             tapahtuma_kävely_koira(pelaaja, pieni_valikko)
             return
@@ -124,14 +217,22 @@ def tapahtuma_jalkapallo_kutsu(pelaaja: Pelaaja, pieni_valikko):
 
         if jalkapallo_kyssäri == "yes":
             print(f"\n{pelaaja.käyttäjätunnus} agrees to play football after school!")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             tapahtuma_kävely_juoksu(pelaaja, pieni_valikko)
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         elif jalkapallo_kyssäri == "no":
             print(f"\n{pelaaja.käyttäjätunnus} declines and continues walking.")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             tapahtuma_kävely_juoksu(pelaaja, pieni_valikko)
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         else:
@@ -147,10 +248,14 @@ def tapahtuma_kävely_juoksu(pelaaja: Pelaaja, pieni_valikko):
 
         if kävely_juoksu_kyssäri == "walk":
             print(f"\n{pelaaja.käyttäjätunnus} continues walking to school")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         elif kävely_juoksu_kyssäri == "run":
             print(f"\n{pelaaja.käyttäjätunnus} starts running to school with their heavy backpack")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         else:
@@ -165,11 +270,15 @@ def tapahtuma_kävely_koira(pelaaja: Pelaaja, pieni_valikko):
 
         if koira_kyssäri == "yes":
             print(f"\n{pelaaja.käyttäjätunnus} pets the dog. It wags its tail happily and then runs off.")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             tapahtuma_kävely_oikotie(pelaaja, pieni_valikko)
             return
         elif koira_kyssäri == "no":
             print(f"\n{pelaaja.käyttäjätunnus} ignores the dog and keeps walking.")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             tapahtuma_kävely_oikotie(pelaaja, pieni_valikko)
             return
@@ -187,10 +296,14 @@ def tapahtuma_kävely_oikotie(pelaaja: Pelaaja, pieni_valikko):
         if oikotie_kyssäri == "yes":
             print(f"\n{pelaaja.käyttäjätunnus} takes the shortcut and saves a few minutes, but their shoes get muddy.")
             pelaaja.lisää_reppuun("muddy shoes")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         elif oikotie_kyssäri == "no":
             print(f"\n{pelaaja.käyttäjätunnus} sticks to the paved path, keeping their shoes clean.")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         else:
@@ -228,10 +341,14 @@ def tapahtuma_pyörä_mäki(pelaaja: Pelaaja, pieni_valikko):
 
         if mäki_kyssäri == "hill":
             print(f"\n{pelaaja.käyttäjätunnus} pedals hard and makes it up the hill, tired but proud.")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         elif mäki_kyssäri == "road":
             print(f"\n{pelaaja.käyttäjätunnus} takes the longer road around. It takes a bit more time but is easy.")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         else:
@@ -245,26 +362,33 @@ def tapahtuma_pyörä_kivi(pelaaja: Pelaaja, pieni_valikko):
     while True:
         kivi_kyssäri = ajastettu_input("Enter your choice: ", aikaraja=7)
 
-        if kivi_kyssäri is None:
-            print(f"\n{pelaaja.käyttäjätunnus} didn't answer in time and hit the rock! Their bicycle breaks.")
-            pelaaja.lisää_reppuun("broken bicycle")
-            pelaaja.sijainti = Paikka("Walking path")
-            pieni_valikko_lisäys(pelaaja, pieni_valikko)
-            tapahtuma_kävely_oikotie(pelaaja, pieni_valikko)
-            return
-        elif kivi_kyssäri.lower() == "yes":
+        if kivi_kyssäri is not None:
+            kivi_kyssäri = kivi_kyssäri.strip().lower()
+
+        if kivi_kyssäri == "yes":
             print(f"\n{pelaaja.käyttäjätunnus} swerves just in time and avoids the rock. Phew!")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
-        elif kivi_kyssäri.lower() == "no":
-            print(f"\n{pelaaja.käyttäjätunnus} hits the rock head-on! Their bicycle breaks.")
+
+        elif kivi_kyssäri is None or kivi_kyssäri == "no":
+            if kivi_kyssäri is None:
+                print(f"\n{pelaaja.käyttäjätunnus} didn't answer in time and hit the rock!")
+            else:
+                print(f"\n{pelaaja.käyttäjätunnus} hits the rock head-on!")
+
+            print("Their bicycle breaks.")
             pelaaja.lisää_reppuun("broken bicycle")
             pelaaja.sijainti = Paikka("Walking path")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             tapahtuma_kävely_oikotie(pelaaja, pieni_valikko)
             return
+
         else:
-            print("Unkown command. Please enter yes or no")
+            print("Unknown command. Please enter yes or no")
 
 
 def tapahtuma_pyörä_koira(pelaaja: Pelaaja, pieni_valikko):
@@ -275,15 +399,18 @@ def tapahtuma_pyörä_koira(pelaaja: Pelaaja, pieni_valikko):
 
         if koira_kyssäri == "yes":
             print(f"\n{pelaaja.käyttäjätunnus} pedals as fast as they can and leaves the dog behind.")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         elif koira_kyssäri == "no":
             print(f"\n{pelaaja.käyttäjätunnus} slows down and the dog bites their leg then wanders off.")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         else:
             print("Unkown command. Please enter yes or no")
-
 
 
 def tapahtuma_pyörä_reitti_koulu(pelaaja: Pelaaja):
@@ -317,11 +444,15 @@ def tapahtuma_bussi_myöhässä(pelaaja: Pelaaja, pieni_valikko):
  
         if myöhässä_kyssäri == "wait":
             print(f"\nThe bus finally arrives and {pelaaja.käyttäjätunnus} hops on.")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         elif myöhässä_kyssäri == "walk":
             print(f"\n{pelaaja.käyttäjätunnus} decides not to wait any longer and starts walking towards school instead.")
             pelaaja.sijainti = Paikka("Walking path")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             tapahtuma_kävely_koira(pelaaja, pieni_valikko)
             return
@@ -340,11 +471,15 @@ def tapahtuma_bussi_lippu(pelaaja: Pelaaja, pieni_valikko):
             else:
                 print(f"\n{pelaaja.käyttäjätunnus} reaches for their bus card but realizes they don't have one!"
                       "\nThey end up paying in coins from the bottom of their backpack.")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         elif lippu_kyssäri == "no":
             print(f"\n{pelaaja.käyttäjätunnus} sneaks past the driver without paying. Risky move...")
             pelaaja.lisää_tunteet("guilty conscience")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         else:
@@ -359,10 +494,14 @@ def tapahtuma_bussi_penkki(pelaaja: Pelaaja, pieni_valikko):
  
         if penkki_kyssäri == "yes":
             print(f"\n{pelaaja.käyttäjätunnus} stands up and offers their seat. The passenger thanks them with a warm smile.")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         elif penkki_kyssäri == "no":
             print(f"\n{pelaaja.käyttäjätunnus} pretends to be asleep and keeps their seat. A bit awkward.")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         else:
@@ -377,12 +516,16 @@ def tapahtuma_bussi_pysäkki_ohi(pelaaja: Pelaaja, pieni_valikko):
  
         if ohi_kyssäri == "jump":
             print(f"\n{pelaaja.käyttäjätunnus} jumps off just in time, a little dizzy but right where they needed to be.")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         elif ohi_kyssäri == "ride":
             print(f"\n{pelaaja.käyttäjätunnus} rides to the next stop and has to walk back the rest of the way.")
             pelaaja.lisää_tunteet("tired legs")
             pelaaja.sijainti = Paikka("Walking path")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             tapahtuma_kävely_oikotie(pelaaja, pieni_valikko)
             return
@@ -424,10 +567,14 @@ def tapahtuma_auto_unohdettu(pelaaja: Pelaaja, pieni_valikko):
             print(f"\n{pelaaja.käyttäjätunnus} turns back to grab their lunch, losing a few minutes but avoiding a hungry afternoon.")
             if not any(esine.nimi == "lunch" for esine in pelaaja.reppu):
                 pelaaja.lisää_reppuun("lunch")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         elif unohdettu_kyssäri == "continue":
             print(f"\n{pelaaja.käyttäjätunnus} decides to continue without their lunch. Hopefully someone shares with them at school!")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         else:
@@ -442,10 +589,14 @@ def tapahtuma_auto_liikenne(pelaaja: Pelaaja, pieni_valikko):
  
         if liikenne_kyssäri == "highway":
             print(f"\n{pelaaja.käyttäjätunnus} sits patiently in traffic on the highway. Slow but steady.")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         elif liikenne_kyssäri == "backroads":
             print(f"\n{pelaaja.käyttäjätunnus} takes the back roads and saves some time, though they did take a wrong turn once.")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         else:
@@ -462,11 +613,15 @@ def tapahtuma_auto_pysäköinti(pelaaja: Pelaaja, pieni_valikko):
         if pysäköinti_kyssäri == "walk":
             print(f"\n{pelaaja.käyttäjätunnus} parks far away and starts walking the rest of the way to school.")
             pelaaja.sijainti = Paikka("Walking path")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             tapahtuma_kävely_juoksu(pelaaja, pieni_valikko)
             return
         elif pysäköinti_kyssäri == "wait":
             print(f"\n{pelaaja.käyttäjätunnus} circles around and finally finds a spot close to school after a few minutes.")
+            odota_enter()
+            tyhjennä_ruutu()
             pieni_valikko_lisäys(pelaaja, pieni_valikko)
             return
         else:

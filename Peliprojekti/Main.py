@@ -2,10 +2,14 @@ from Class import *
 from Function import *
 
 pelaaja = luo_pelaaja()
+
+# with open("Intro.txt", "r", encoding="utf-8") as tiedosto:
+#     print(tiedosto.read())
+
 komento = aloita_peli(pelaaja)
 
-while komento != "quit":
-    if not pelaaja.matka_alkanut and komento == "walking":
+while komento != "quit" and komento != "Quit":
+    if not pelaaja.matka_alkanut and komento == "1": # walking
         reitti_kävely1(pelaaja)
         tapahtuma_kävely_roska(pelaaja, pieni_valikko)
         tapahtuma_kävely_kyssäri(pelaaja, pieni_valikko)
@@ -14,7 +18,7 @@ while komento != "quit":
         pelaaja.matka_alkanut = True
 
 
-    elif not pelaaja.matka_alkanut and komento == "bicycle":
+    elif not pelaaja.matka_alkanut and komento == "2": # bicycle
         reitti_pyörä1(pelaaja)
         tapahtuma_pyörä_mäki(pelaaja, pieni_valikko)
         tapahtuma_pyörä_koira(pelaaja, pieni_valikko)
@@ -23,7 +27,7 @@ while komento != "quit":
         pelaaja.matka_alkanut = True
 
 
-    elif not pelaaja.matka_alkanut and komento == "bus":
+    elif not pelaaja.matka_alkanut and komento == "3": # bus
         reitti_bussi1(pelaaja)
         tapahtuma_bussi_myöhässä(pelaaja, pieni_valikko)
         tapahtuma_bussi_lippu(pelaaja, pieni_valikko)
@@ -33,7 +37,7 @@ while komento != "quit":
         pelaaja.matka_alkanut = True
     
     
-    elif not pelaaja.matka_alkanut and komento == "car":
+    elif not pelaaja.matka_alkanut and komento == "4": # car
         reitti_auto1(pelaaja)
         tapahtuma_auto_unohdettu(pelaaja, pieni_valikko)
         tapahtuma_auto_liikenne(pelaaja, pieni_valikko)

@@ -1,0 +1,20 @@
+HOW TO PLAY
+-----------
+- Enter your username and age (12-99) to start.
+- Choose how to travel to school: walking, bicycle, bus or car.
+- During the trip, answer the questions by typing one of the options
+  shown in the brackets, for example yes/no or hill/road.
+- After each event a small menu appears:
+    backpack       - show what you are carrying
+    location       - show the route map and where you are
+    continue/enter - go on with the trip (typing "continue" or just
+                     pressing Enter both work)
+    quit           - leave the game
+
+
+SAVING
+------
+Your progress is saved automatically at the start of every event.
+To continue later, start the game, enter the same username and answer
+"yes" to "Continue the saved game?". You continue from the start of
+the event you were on.

@@ -1,5 +1,5 @@
 class Pelaaja:
-    def __init__(self, käyttäjätunnus, ikä, tunteet):
+    def __init__(self, käyttäjätunnus, ikä):
         self.käyttäjätunnus = käyttäjätunnus
         self.ikä = ikä
         self.tunteet = []
@@ -48,10 +48,16 @@ class Pelaaja:
         """
         print(kartta)
 
-
 def luo_pelaaja():
     käyttäjätunnus = input("Enter username: ")
-    käyttäjä_ikä = int(input("Enter age: "))
+
+    while True:
+        try:
+            käyttäjä_ikä = int(input("Enter age: "))
+            break
+        except ValueError:
+            print("Please enter a number.")
+
 
     if käyttäjä_ikä < 12:
         print("You are too young to play this game, thank you and bye bye.")
