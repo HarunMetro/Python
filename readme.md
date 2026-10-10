@@ -2,6 +2,10 @@
 
 **Haroon Hashemi**
 
+## Peliprojekti 
+
+ Peliprojekti valmis 
+
 ## Moduuli 1 + 2
 
  Tein tehtävät 1 ja 2
@@ -27,3 +31,18 @@
 ## Moduuli 7
 
  Sain tehtyä tehtävät 1-6
+
+## Moduuli 8
+
+ Sain tehtyä 1-4 tehtävät
+## Moduuli 9 
+
+ Sain tehtyä 1-4 tehtävät
+
+## Moduuli 10
+
+ Sain tehtyä 1-4 tehtävät
+
+## Moduuli 11
+
+ Sain tehtyä 1 ja 2 tehtävät

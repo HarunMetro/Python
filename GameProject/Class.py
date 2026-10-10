@@ -1,8 +1,11 @@
+import sys
+
 class Pelaaja:
     def __init__(self, käyttäjätunnus, ikä):
         self.käyttäjätunnus = käyttäjätunnus
         self.ikä = ikä
         self.tunteet = []
+        self.tapahtumat = []  # tapahtumat jotka vaikuttavat loppuun (esim. "late", "muddy shoes")
         self.reppu = [
             Esine("phone", 0.15),
             Esine("headphones", 0.05),
@@ -20,15 +23,33 @@ class Pelaaja:
 
     def lisää_tunteet(self, tunne):
         self.tunteet.append(tunne)
-    
+
+    def lisää_tapahtuma(self, tapahtuma):
+        self.tapahtumat.append(tapahtuma)
+
+    def reppu_paino(self):
+        return round(sum(esine.paino for esine in self.reppu), 2)
+
     def näytä_reppu(self):
         print("\nYour backpack contains:")
         for esine in self.reppu:
             print(f"- {esine.nimi} ({esine.paino} kg)")
+        print(f"\nTotal weight: {self.reppu_paino()} kg")
 
     def näytä_sijainti(self):
         self.näytä_kartta()
         print(f"\nYou are currently: {self.sijainti.nimi}")
+
+    def näytä_status(self):
+        print("\n--- Status ---")
+        print(f"Name: {self.käyttäjätunnus}")
+        print(f"Age: {self.ikä}")
+        print(f"Location: {self.sijainti.nimi}")
+        print(f"Backpack: {len(self.reppu)} items ({self.reppu_paino()} kg)")
+        if self.tunteet:
+            print(f"Feelings: {', '.join(self.tunteet)}")
+        else:
+            print("Feelings: none yet")
 
     def näytä_kartta(self):
         kartta = """
@@ -37,11 +58,11 @@ class Pelaaja:
     ╠═══════════════════════════════════════════════════════╣
     ║                                                       ║
     ║   Walking   Home ●━━●━━●━━●━━●━━●━━●━━─┐              ║
-    ║                                        |              ║
+    ║                                        │              ║
     ║   Bicycle   Home ●━━●━━●━━●━━──────────┤              ║
-    ║                                        |──▶ SCHOOL    ║
+    ║                                        ├──▶ SCHOOL    ║
     ║   Bus       Home ●━━●━━●━━●━━●━━───────┤              ║
-    ║                                        |              ║
+    ║                                        │              ║
     ║   Car       Home ●━━●━━●━━●━━●━━───────┘              ║
     ║                                                       ║
     ╚═══════════════════════════════════════════════════════╝
@@ -49,11 +70,15 @@ class Pelaaja:
         print(kartta)
 
 def luo_pelaaja():
-    käyttäjätunnus = input("Enter username: ")
+    käyttäjätunnus = input("Enter username: ").strip()
+
+    while käyttäjätunnus == "":
+        print("Username cannot be empty.")
+        käyttäjätunnus = input("Enter username: ").strip()
 
     while True:
         try:
-            käyttäjä_ikä = int(input("Enter age: "))
+            käyttäjä_ikä = int(input("Enter age: ").strip())
             break
         except ValueError:
             print("Please enter a number.")
@@ -61,10 +86,10 @@ def luo_pelaaja():
 
     if käyttäjä_ikä < 12:
         print("You are too young to play this game, thank you and bye bye.")
-        exit()
+        sys.exit()
     elif käyttäjä_ikä > 99:
-        print("Your too old to play this game, thank you and bye bye.")
-        exit()  # peli sammuu   
+        print("You're too old to play this game, thank you and bye bye.")
+        sys.exit()  # peli sammuu
 
     return Pelaaja(käyttäjätunnus, käyttäjä_ikä)
 

@@ -24,7 +24,27 @@ for numero in range(1, 11):
     huippunopeus = random.randint(100, 200)
     autot.append(Auto(rekisteritunnus, huippunopeus))
 
-# for loop, jossa käyt autot läpi ja arvot jokaisen kohdalla nopeudenmuutoksen arvon, jolla kutsut kiihdytä() funktiota.
-# looppaa niin, että autot kulkee tunnin
+# Kilpailu jatkuu, kunnes jokin auto on ajanut vähintään 10000 km
+while True:
+    for auto in autot:
+        # 1. Nopeuden muutos (-10 ja +15 väliltä)
+        auto.kiihdytä(random.randint(-10, 15))
+        # 2. Auto liikkuu yhden tunnin
+        auto.kulje(1)
+
+    # Tarkista, onko jokin auto maalissa
+    if any(auto.kuljettumatka >= 10000 for auto in autot):
+        break
+
+# Lopuksi tulostetaan kaikki autot taulukkona
+print(f"\n{'Rekisteri':<12} {'Huippunopeus':>13} {'Nopeus':>8} {'Matka (km)':>12}")
+print("-" * 48)
+for auto in autot:
+    print(
+        f"{auto.rekisteritunnus:<12} "
+        f"{auto.huippunopeus:>13} "
+        f"{auto.nykynopeus:>8} "
+        f"{auto.kuljettumatka:>12.1f}"
+    )
 
 
